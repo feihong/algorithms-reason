@@ -1,7 +1,18 @@
 
 let binarySearch = (item, arr) => {
-  let find = (arr, low, high) => {
-    None
+  let rec find = (arr, low, high) => {
+    if (low > high) 
+      None
+    else {
+      let mid = (low + high) / 2;
+      let guess = arr[mid];
+      if (guess == item)  
+        Some(mid)
+      else if (guess > item)
+        find(arr, low, mid - 1)
+      else 
+        find(arr, mid + 1, high)
+    }
   };
 
   switch (arr) {

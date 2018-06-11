@@ -2,11 +2,37 @@
 'use strict';
 
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
+var Caml_array = require("bs-platform/lib/js/caml_array.js");
 
 function binarySearch(item, arr) {
   var len = arr.length;
   if (len !== 1) {
-    return /* None */0;
+    if (len !== 0) {
+      var arr$1 = arr;
+      var _low = 0;
+      var _high = arr.length - 1 | 0;
+      while(true) {
+        var high = _high;
+        var low = _low;
+        if (low > high) {
+          return /* None */0;
+        } else {
+          var mid = (low + high | 0) / 2 | 0;
+          var guess = Caml_array.caml_array_get(arr$1, mid);
+          if (Caml_obj.caml_equal(guess, item)) {
+            return /* Some */[mid];
+          } else if (Caml_obj.caml_greaterthan(guess, item)) {
+            _high = mid - 1 | 0;
+            continue ;
+          } else {
+            _low = mid + 1 | 0;
+            continue ;
+          }
+        }
+      };
+    } else {
+      return /* None */0;
+    }
   } else {
     var x = arr[0];
     var match = Caml_obj.caml_equal(x, item);
