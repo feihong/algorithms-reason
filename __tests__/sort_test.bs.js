@@ -29,7 +29,69 @@ describe("Selection sort", (function () {
                     }));
       }));
 
+describe("Quick sort", (function () {
+        Jest.test("0 elements", (function () {
+                return Jest.Expect[/* toEqual */12](/* array */[], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[])));
+              }));
+        Jest.test("1 element", (function () {
+                return Jest.Expect[/* toEqual */12](/* array */[55], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[55])));
+              }));
+        Jest.test("2 elements", (function () {
+                return Jest.Expect[/* toEqual */12](/* array */[
+                            44,
+                            55
+                          ], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[
+                                    44,
+                                    55
+                                  ])));
+              }));
+        Jest.test("2 elements flipped", (function () {
+                return Jest.Expect[/* toEqual */12](/* array */[
+                            44,
+                            55
+                          ], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[
+                                    55,
+                                    44
+                                  ])));
+              }));
+        Jest.test("5 elements", (function () {
+                return Jest.Expect[/* toEqual */12](Belt_Array.range(1, 5), Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[
+                                    4,
+                                    3,
+                                    1,
+                                    5,
+                                    2
+                                  ])));
+              }));
+        Jest.test("7 elements with repeating numbers", (function () {
+                return Jest.Expect[/* toEqual */12](/* array */[
+                            1,
+                            1,
+                            2,
+                            3,
+                            3,
+                            4,
+                            5
+                          ], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[
+                                    4,
+                                    1,
+                                    3,
+                                    1,
+                                    5,
+                                    2,
+                                    3
+                                  ])));
+              }));
+        return Jest.test("Many elements", (function () {
+                      var result = Sort$Algorithms.quickSort(Belt_Array.shuffle(Belt_Array.range(1, 200)));
+                      return Jest.Expect[/* toBe */2](true, Jest.Expect[/* expect */0](Belt_SortArray.isSorted(result, Caml_obj.caml_compare)));
+                    }));
+      }));
+
 var selectionSort = Sort$Algorithms.selectionSort;
 
+var quickSort = Sort$Algorithms.quickSort;
+
 exports.selectionSort = selectionSort;
+exports.quickSort = quickSort;
 /*  Not a pure module */

@@ -2,14 +2,16 @@
 'use strict';
 
 var $$Array = require("bs-platform/lib/js/array.js");
+var Random = require("bs-platform/lib/js/random.js");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
+var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
 var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 
 function remove(arr, i) {
   var part1 = $$Array.sub(arr, 0, i);
-  var high = (arr.length - i | 0) - 1 | 0;
-  var part2 = $$Array.sub(arr, i + 1 | 0, high);
+  var len = (arr.length - i | 0) - 1 | 0;
+  var part2 = $$Array.sub(arr, i + 1 | 0, len);
   return $$Array.append(part1, part2);
 }
 
@@ -89,9 +91,56 @@ function selectionSort(arr) {
   }
 }
 
+function quickSort(arr) {
+  var len = arr.length;
+  if (len >= 3) {
+    var index = Random.$$int(arr.length);
+    var pivot = Caml_array.caml_array_get(arr, index);
+    return $$Array.concat(/* :: */[
+                quickSort(Belt_Array.keep(arr, (function (v) {
+                            return Caml_obj.caml_lessthan(v, pivot);
+                          }))),
+                /* :: */[
+                  Belt_Array.keep(arr, (function (v) {
+                          return Caml_obj.caml_equal(v, pivot);
+                        })),
+                  /* :: */[
+                    quickSort(Belt_Array.keep(arr, (function (v) {
+                                return Caml_obj.caml_greaterthan(v, pivot);
+                              }))),
+                    /* [] */0
+                  ]
+                ]
+              ]);
+  } else {
+    switch (len) {
+      case 0 : 
+      case 1 : 
+          return arr;
+      case 2 : 
+          var x = arr[0];
+          var y = arr[1];
+          var match = Caml_obj.caml_lessequal(x, y);
+          if (match) {
+            return arr;
+          } else {
+            return /* array */[
+                    y,
+                    x
+                  ];
+          }
+      
+    }
+  }
+}
+
+var keep = Belt_Array.keep;
+
 exports.Array2 = Array2;
 exports.findSmallest_ = findSmallest_;
 exports.findSmallest = findSmallest;
 exports.selectionSort_ = selectionSort_;
 exports.selectionSort = selectionSort;
+exports.keep = keep;
+exports.quickSort = quickSort;
 /* No side effect */
