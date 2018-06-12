@@ -1,5 +1,5 @@
 
-module Array2 = {
+module ArrayUtil = {
   /* Return a new Array with the element at the given index removed. */
   let remove = (arr, i) => {
     let part1 = arr |. Array.sub(0, i);
@@ -36,7 +36,7 @@ let rec selectionSort_ = (arr, acc) => {
   | [||] => acc
   | _ => {
       let (value, index) = findSmallest(arr);
-      let newArr = Array2.remove(arr, index);
+      let newArr = ArrayUtil.remove(arr, index);
       let newAcc = Array.append(acc, [|value|]);
       selectionSort_(newArr, newAcc)
     }
@@ -59,7 +59,7 @@ let rec quickSort = arr => {
   | [|_|] => arr
   | [|x, y|] => (x <= y) ? arr : [|y, x|]
   | _ => {
-      /* Selecting random pivot increases average case performance */ 
+      /* Selecting random pivot improves average case performance */ 
       let index = Random.int(Array.length(arr));
       let pivot = arr[index];
       Array.concat([

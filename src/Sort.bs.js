@@ -15,7 +15,7 @@ function remove(arr, i) {
   return $$Array.append(part1, part2);
 }
 
-var Array2 = /* module */[/* remove */remove];
+var ArrayUtil = /* module */[/* remove */remove];
 
 function findSmallest_(arr, _i, length, _minVal, _minIndex) {
   while(true) {
@@ -136,7 +136,7 @@ function quickSort(arr) {
 
 var keep = Belt_Array.keep;
 
-exports.Array2 = Array2;
+exports.ArrayUtil = ArrayUtil;
 exports.findSmallest_ = findSmallest_;
 exports.findSmallest = findSmallest;
 exports.selectionSort_ = selectionSort_;

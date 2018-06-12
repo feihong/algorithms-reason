@@ -2,96 +2,90 @@
 'use strict';
 
 var Jest = require("@glennsl/bs-jest/src/jest.js");
+var List = require("bs-platform/lib/js/list.js");
+var Curry = require("bs-platform/lib/js/curry.js");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
 var Belt_SortArray = require("bs-platform/lib/js/belt_SortArray.js");
 var Sort$Algorithms = require("../src/Sort.bs.js");
 
-describe("Selection sort", (function () {
-        Jest.test("0 elements", (function () {
-                return Jest.Expect[/* toEqual */12](/* array */[], Jest.Expect[/* expect */0](Sort$Algorithms.selectionSort(/* array */[])));
-              }));
-        Jest.test("1 element", (function () {
-                return Jest.Expect[/* toEqual */12](/* array */[55], Jest.Expect[/* expect */0](Sort$Algorithms.selectionSort(/* array */[55])));
-              }));
-        Jest.test("5 elements", (function () {
-                return Jest.Expect[/* toEqual */12](Belt_Array.range(1, 5), Jest.Expect[/* expect */0](Sort$Algorithms.selectionSort(/* array */[
-                                    4,
-                                    3,
-                                    1,
-                                    5,
-                                    2
-                                  ])));
-              }));
-        return Jest.test("Many elements", (function () {
-                      var result = Sort$Algorithms.selectionSort(Belt_Array.shuffle(Belt_Array.range(1, 200)));
-                      return Jest.Expect[/* toBe */2](true, Jest.Expect[/* expect */0](Belt_SortArray.isSorted(result, Caml_obj.caml_compare)));
-                    }));
-      }));
+function createSortTestSuite(title, sortFn) {
+  describe(title, (function () {
+          Jest.test("0 elements", (function () {
+                  return Jest.Expect[/* toEqual */12](/* array */[], Jest.Expect[/* expect */0](Curry._1(sortFn, /* array */[])));
+                }));
+          Jest.test("1 element", (function () {
+                  return Jest.Expect[/* toEqual */12](/* array */[55], Jest.Expect[/* expect */0](Curry._1(sortFn, /* array */[55])));
+                }));
+          Jest.test("2 elements", (function () {
+                  return Jest.Expect[/* toEqual */12](/* array */[
+                              44,
+                              55
+                            ], Jest.Expect[/* expect */0](Curry._1(sortFn, /* array */[
+                                      44,
+                                      55
+                                    ])));
+                }));
+          Jest.test("2 elements flipped", (function () {
+                  return Jest.Expect[/* toEqual */12](/* array */[
+                              44,
+                              55
+                            ], Jest.Expect[/* expect */0](Curry._1(sortFn, /* array */[
+                                      55,
+                                      44
+                                    ])));
+                }));
+          Jest.test("5 elements", (function () {
+                  return Jest.Expect[/* toEqual */12](Belt_Array.range(1, 5), Jest.Expect[/* expect */0](Curry._1(sortFn, /* array */[
+                                      4,
+                                      3,
+                                      1,
+                                      5,
+                                      2
+                                    ])));
+                }));
+          Jest.test("7 elements with repeating numbers", (function () {
+                  return Jest.Expect[/* toEqual */12](/* array */[
+                              1,
+                              1,
+                              2,
+                              3,
+                              3,
+                              4,
+                              5
+                            ], Jest.Expect[/* expect */0](Curry._1(sortFn, /* array */[
+                                      4,
+                                      1,
+                                      3,
+                                      1,
+                                      5,
+                                      2,
+                                      3
+                                    ])));
+                }));
+          return Jest.test("Many elements", (function () {
+                        var result = Curry._1(sortFn, Belt_Array.shuffle(Belt_Array.range(1, 500)));
+                        return Jest.Expect[/* toBe */2](true, Jest.Expect[/* expect */0](Belt_SortArray.isSorted(result, Caml_obj.caml_compare)));
+                      }));
+        }));
+  return /* () */0;
+}
 
-describe("Quick sort", (function () {
-        Jest.test("0 elements", (function () {
-                return Jest.Expect[/* toEqual */12](/* array */[], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[])));
-              }));
-        Jest.test("1 element", (function () {
-                return Jest.Expect[/* toEqual */12](/* array */[55], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[55])));
-              }));
-        Jest.test("2 elements", (function () {
-                return Jest.Expect[/* toEqual */12](/* array */[
-                            44,
-                            55
-                          ], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[
-                                    44,
-                                    55
-                                  ])));
-              }));
-        Jest.test("2 elements flipped", (function () {
-                return Jest.Expect[/* toEqual */12](/* array */[
-                            44,
-                            55
-                          ], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[
-                                    55,
-                                    44
-                                  ])));
-              }));
-        Jest.test("5 elements", (function () {
-                return Jest.Expect[/* toEqual */12](Belt_Array.range(1, 5), Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[
-                                    4,
-                                    3,
-                                    1,
-                                    5,
-                                    2
-                                  ])));
-              }));
-        Jest.test("7 elements with repeating numbers", (function () {
-                return Jest.Expect[/* toEqual */12](/* array */[
-                            1,
-                            1,
-                            2,
-                            3,
-                            3,
-                            4,
-                            5
-                          ], Jest.Expect[/* expect */0](Sort$Algorithms.quickSort(/* array */[
-                                    4,
-                                    1,
-                                    3,
-                                    1,
-                                    5,
-                                    2,
-                                    3
-                                  ])));
-              }));
-        return Jest.test("Many elements", (function () {
-                      var result = Sort$Algorithms.quickSort(Belt_Array.shuffle(Belt_Array.range(1, 200)));
-                      return Jest.Expect[/* toBe */2](true, Jest.Expect[/* expect */0](Belt_SortArray.isSorted(result, Caml_obj.caml_compare)));
-                    }));
-      }));
+List.iter((function (param) {
+        return createSortTestSuite(param[0], param[1]);
+      }), /* :: */[
+      /* tuple */[
+        "Selection sort",
+        Sort$Algorithms.selectionSort
+      ],
+      /* :: */[
+        /* tuple */[
+          "Quick sort",
+          Sort$Algorithms.quickSort
+        ],
+        /* [] */0
+      ]
+    ]);
 
-var selectionSort = Sort$Algorithms.selectionSort;
-
-var quickSort = Sort$Algorithms.quickSort;
-
-exports.selectionSort = selectionSort;
-exports.quickSort = quickSort;
+exports.createSortTestSuite = createSortTestSuite;
 /*  Not a pure module */
