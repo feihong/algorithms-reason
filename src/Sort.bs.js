@@ -61,7 +61,7 @@ function findSmallest(arr) {
   }
 }
 
-function selectionSort_(_arr, _acc) {
+function sort(_arr, _acc) {
   while(true) {
     var acc = _acc;
     var arr = _arr;
@@ -78,11 +78,17 @@ function selectionSort_(_arr, _acc) {
   };
 }
 
+var Selection = /* module */[
+  /* findSmallest_ */findSmallest_,
+  /* findSmallest */findSmallest,
+  /* sort */sort
+];
+
 function selectionSort(arr) {
   var len = arr.length;
   if (len !== 1) {
     if (len !== 0) {
-      return selectionSort_(arr, /* array */[]);
+      return sort(arr, /* array */[]);
     } else {
       return /* array */[];
     }
@@ -91,13 +97,13 @@ function selectionSort(arr) {
   }
 }
 
-function quickSort(arr) {
+function naiveQuickSort(arr) {
   var len = arr.length;
   if (len >= 3) {
     var index = Random.$$int(arr.length);
     var pivot = Caml_array.caml_array_get(arr, index);
     return $$Array.concat(/* :: */[
-                quickSort(Belt_Array.keep(arr, (function (v) {
+                naiveQuickSort(Belt_Array.keep(arr, (function (v) {
                             return Caml_obj.caml_lessthan(v, pivot);
                           }))),
                 /* :: */[
@@ -105,7 +111,7 @@ function quickSort(arr) {
                           return Caml_obj.caml_equal(v, pivot);
                         })),
                   /* :: */[
-                    quickSort(Belt_Array.keep(arr, (function (v) {
+                    naiveQuickSort(Belt_Array.keep(arr, (function (v) {
                                 return Caml_obj.caml_greaterthan(v, pivot);
                               }))),
                     /* [] */0
@@ -134,13 +140,51 @@ function quickSort(arr) {
   }
 }
 
-var keep = Belt_Array.keep;
+function swap(arr, i, j) {
+  var temp = Caml_array.caml_array_get(arr, i);
+  Caml_array.caml_array_set(arr, i, Caml_array.caml_array_get(arr, j));
+  return Caml_array.caml_array_set(arr, j, temp);
+}
+
+function partition(arr, low, high) {
+  var pivotValue = Caml_array.caml_array_get(arr, high);
+  var i = low - 1 | 0;
+  for(var j = low ,j_finish = high - 1 | 0; j <= j_finish; ++j){
+    if (Caml_obj.caml_lessequal(Caml_array.caml_array_get(arr, j), pivotValue)) {
+      i = i + 1 | 0;
+      swap(arr, i, j);
+    }
+    
+  }
+  swap(arr, i + 1 | 0, high);
+  return i + 1 | 0;
+}
+
+function sort$1(arr, low, high) {
+  var low$1 = low;
+  while(low$1 < high) {
+    var pivotIndex = partition(arr, low$1, high);
+    sort$1(arr, low$1, pivotIndex - 1 | 0);
+    low$1 = pivotIndex + 1 | 0;
+  };
+  return /* () */0;
+}
+
+var QuickSort = /* module */[
+  /* swap */swap,
+  /* partition */partition,
+  /* sort */sort$1
+];
+
+function quickSort(arr) {
+  sort$1(arr, 0, arr.length - 1 | 0);
+  return arr;
+}
 
 exports.ArrayUtil = ArrayUtil;
-exports.findSmallest_ = findSmallest_;
-exports.findSmallest = findSmallest;
-exports.selectionSort_ = selectionSort_;
+exports.Selection = Selection;
 exports.selectionSort = selectionSort;
-exports.keep = keep;
+exports.naiveQuickSort = naiveQuickSort;
+exports.QuickSort = QuickSort;
 exports.quickSort = quickSort;
 /* No side effect */

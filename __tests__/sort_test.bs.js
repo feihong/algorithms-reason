@@ -80,10 +80,16 @@ List.iter((function (param) {
       ],
       /* :: */[
         /* tuple */[
-          "Quick sort",
-          Sort$Algorithms.quickSort
+          "Naive quick sort",
+          Sort$Algorithms.naiveQuickSort
         ],
-        /* [] */0
+        /* :: */[
+          /* tuple */[
+            "Quick sort",
+            Sort$Algorithms.quickSort
+          ],
+          /* [] */0
+        ]
       ]
     ]);
 
