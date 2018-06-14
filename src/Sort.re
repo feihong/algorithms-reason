@@ -45,8 +45,6 @@ module Selection = {
   };
 }
 
-
-
 let selectionSort: array('a) => array('a) = arr => {
   switch (arr) {
   | [||] => [||]
@@ -82,9 +80,7 @@ module QuickSort = {
   };
 
   let partition = (arr, low, high) => {
-    let pivotIndex = high;
-    /* let pivotIndex = arr |> Array.length |> Random.int; */
-    let pivotValue = arr[pivotIndex];
+    let pivotValue = arr[high];
 
     let i = ref(low - 1);   /* index of smaller element */
 
@@ -96,6 +92,12 @@ module QuickSort = {
     };
     swap(arr, i^ + 1, high);
     i^ + 1
+  };
+
+  let partitionRandom = (arr, low, high) => {
+    let i = arr |> Array.length |> Random.int;
+    swap(arr, i, high);
+    partition(arr, low, high);
   };
 
   let rec sort = (arr, low, high) => {
@@ -112,5 +114,5 @@ module QuickSort = {
 let rec quickSort = arr => {
   /* Sort the array in-place */
   QuickSort.sort(arr, 0, Array.length(arr) - 1);
-  arr
+  arr;
 };

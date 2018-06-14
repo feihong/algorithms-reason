@@ -160,6 +160,12 @@ function partition(arr, low, high) {
   return i + 1 | 0;
 }
 
+function partitionRandom(arr, low, high) {
+  var i = Random.$$int(arr.length);
+  swap(arr, i, high);
+  return partition(arr, low, high);
+}
+
 function sort$1(arr, low, high) {
   var low$1 = low;
   while(low$1 < high) {
@@ -173,6 +179,7 @@ function sort$1(arr, low, high) {
 var QuickSort = /* module */[
   /* swap */swap,
   /* partition */partition,
+  /* partitionRandom */partitionRandom,
   /* sort */sort$1
 ];
 
